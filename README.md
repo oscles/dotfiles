@@ -2,6 +2,8 @@
 
 Personal dotfiles configuration for macOS, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
+> **💡 Quick Start**: Run `./install.sh` after cloning to automatically set up everything. See [Installation](#-installation) for details.
+
 ## 📋 Table of Contents
 
 - [Overview](#overview)
@@ -40,7 +42,39 @@ Before installing these dotfiles, ensure you have:
 
 ## 🚀 Installation
 
-### Quick Install
+### Recommended: Automated Installation
+
+The easiest way to install these dotfiles is using the provided installation script:
+
+1. Clone this repository:
+   ```bash
+   git clone <your-repo-url> ~/.dotfiles
+   cd ~/.dotfiles
+   ```
+
+2. Run the installation script:
+   ```bash
+   ./install.sh
+   ```
+
+The script will:
+- ✅ Check and install prerequisites (Homebrew, GNU Stow)
+- 🧪 Optionally run a dry-run test before installation
+- 📦 Install all dotfiles configurations using Stow
+- 🍺 Optionally install all Homebrew packages from Brewfile
+- 🎨 Show colored progress output with clear status messages
+
+**Options:**
+```bash
+# Skip the dry-run test
+./install.sh --skip-test
+```
+
+See the [Installation Scripts](#-installation-scripts) section for more details.
+
+### Manual Installation
+
+If you prefer to install manually or want more control:
 
 1. Clone this repository:
    ```bash
@@ -55,9 +89,20 @@ Before installing these dotfiles, ensure you have:
 
    This will symlink all configuration files to their appropriate locations in your home directory.
 
+3. Install Homebrew packages (optional):
+   ```bash
+   brew bundle
+   ```
+
+   This will install:
+   - Command-line tools (git, fnm, pnpm, pyenv)
+   - Applications (Cursor, Docker, Slack, Brave, etc.)
+   - Fonts (JetBrains Mono, Zed Mono)
+   - VS Code/Cursor extensions
+
 ### Selective Installation
 
-To install only specific configurations:
+To install only specific configurations manually:
 
 ```bash
 # Install only Git configuration
@@ -69,20 +114,6 @@ stow zsh
 # Install multiple configurations
 stow git zsh cursor
 ```
-
-### Install Homebrew Packages
-
-After installing the dotfiles, install all Homebrew packages and applications:
-
-```bash
-brew bundle
-```
-
-This will install:
-- Command-line tools (git, fnm, pnpm, pyenv)
-- Applications (Cursor, Docker, Slack, Brave, etc.)
-- Fonts (JetBrains Mono, Zed Mono)
-- VS Code/Cursor extensions
 
 ### Post-Installation Setup
 
@@ -102,36 +133,54 @@ See the [Claude Desktop Configuration](#claude-desktop-configuration) section fo
 
 ## 🛠️ Installation Scripts
 
-This repository includes convenient installation scripts that provide colored output and interactive prompts to guide you through the installation process.
+This repository includes convenient installation scripts that provide colored output and interactive prompts to guide you through the installation process. **These scripts are the recommended way to install the dotfiles.**
 
-### Installation Script (`install.sh`)
+### Installation Script (`install.sh`) ⭐ Recommended
 
-The main installation script automates the entire setup process:
+The main installation script automates the entire setup process with a user-friendly interface:
 
 ```bash
 ./install.sh
 ```
 
 **Features:**
-- ✅ Checks and installs prerequisites (Homebrew, GNU Stow)
-- 🧪 Optional dry-run test before installation
-- 📦 Installs all dotfiles configurations
-- 🍺 Optionally installs Homebrew packages
-- 🎨 Colored terminal output with progress indicators
-- ⚠️ Interactive prompts for confirmation
+- ✅ **Automatic prerequisite installation**: Checks and installs Homebrew and GNU Stow if missing
+- 🧪 **Safety first**: Optional dry-run test before making any changes
+- 📦 **Complete installation**: Installs all dotfiles configurations automatically
+- 🍺 **Homebrew integration**: Optionally installs all packages from Brewfile
+- 🎨 **Beautiful output**: Colored terminal output with progress indicators (✓, ✗, ⚠, →)
+- ⚠️ **Interactive prompts**: Asks for confirmation at key steps
+- 📊 **Progress tracking**: Shows exactly what's being installed at each step
+
+**Installation Flow:**
+1. **Prerequisites Check**: Verifies Homebrew and Stow are installed (installs if missing)
+2. **Dry-Run Test** (optional): Previews what will be installed without making changes
+3. **Dotfiles Installation**: Creates symlinks for all configurations using Stow
+4. **Homebrew Packages** (optional): Installs applications, fonts, and extensions
+5. **Summary**: Displays what was installed and next steps
 
 **Options:**
 ```bash
-# Skip the dry-run test
+# Skip the dry-run test (faster installation)
 ./install.sh --skip-test
 ```
 
-**What it does:**
-1. Checks if Homebrew and Stow are installed (installs them if missing)
-2. Optionally runs a dry-run test to preview changes
-3. Installs all dotfiles configurations using Stow
-4. Optionally installs all Homebrew packages from Brewfile
-5. Provides a summary of what was installed
+**Example Output:**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Checking Prerequisites
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Homebrew is installed
+✓ GNU Stow is installed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Installing Dotfiles
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+→ Installing git configuration...
+✓ git configuration installed
+```
 
 ### Testing Script (`test.sh`)
 
@@ -184,10 +233,35 @@ Remove all installed dotfiles:
 
 ## 🧪 Testing with Stow
 
-Before applying changes, it's recommended to test what Stow will do using the `--dry-run` flag. This shows you what symlinks would be created without actually creating them.
+Before applying changes, it's recommended to test what Stow will do. You can use either the provided script or Stow commands directly.
 
-### Test All Configurations
+### Using the Test Script (Recommended)
 
+The easiest way to test your installation:
+
+```bash
+# Test all configurations
+./test.sh
+
+# Test a specific configuration
+./test.sh git
+./test.sh zsh
+
+# List available configurations
+./test.sh --list
+```
+
+The script provides:
+- 🎨 Colored output for better readability
+- ✅ Validation that Stow is installed
+- 📋 Lists available configurations
+- 🧪 Dry-run testing without making changes
+
+### Using Stow Commands Directly
+
+You can also test manually using Stow's built-in commands:
+
+**Test All Configurations:**
 ```bash
 stow --dry-run .
 ```
@@ -197,8 +271,7 @@ This will show you:
 - Where they would be created
 - Any conflicts that might occur
 
-### Test Specific Configuration
-
+**Test Specific Configuration:**
 ```bash
 # Test Git configuration
 stow --dry-run git
@@ -210,24 +283,21 @@ stow --dry-run zsh
 stow --dry-run cursor
 ```
 
-### Verbose Output
-
+**Verbose Output:**
 For more detailed information about what Stow is doing:
 
 ```bash
 stow --verbose --dry-run .
 ```
 
-### Simulate Installation
-
+**Simulate Installation:**
 To see exactly what would happen without making changes:
 
 ```bash
 stow --simulate .
 ```
 
-### Check for Conflicts
-
+**Check for Conflicts:**
 Before installing, check if any files already exist that would conflict:
 
 ```bash
