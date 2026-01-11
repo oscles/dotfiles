@@ -1,0 +1,7 @@
+[user]
+	name = Osnaider Miranda
+	email = osnaiderluis94@gmail.com
+
+# Configuración para repositorios de InnerPro
+[includeIf "hasconfig:remote.*.url:*InnerPro-Sports/**"]
+	path = /Users/oscles/.gitconfig.d/innerpro
