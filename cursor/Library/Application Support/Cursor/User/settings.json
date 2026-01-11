@@ -1,0 +1,149 @@
+{
+    "workbench.startupEditor": "none",
+    "editor.accessibilitySupport": "off",
+    "terminal.integrated.env.osx": {
+        "FIG_NEW_SESSION": "1",
+        "PYTHONPATH": "${workspaceFolder}/code"
+    },
+    "editor.tabSize": 4,
+    "workbench.colorTheme": "Atom One Dark",
+    "workbench.iconTheme": "symbols",
+    "sonarlint.automaticAnalysis": false,
+    "editor.inlineSuggest.enabled": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "html.format.indentHandlebars": true,
+    "html.format.templating": true,
+    "editor.fontFamily": "'Monaco','Zed Mono','JetBrains Mono',Menlo,'Cascadia Code','Courier New',monospace",
+    "editor.fontLigatures": true,
+    "editor.linkedEditing": true,
+    "editor.stickyScroll.enabled": true,
+    "explorer.fileNesting.enabled": true,
+    "git.mergeEditor": true,
+    "merge-conflict.autoNavigateNextConflict.enabled": true,
+    "files.associations": {
+        "*.html": "html"
+    },
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "cSpell.language": "en,es",
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "cypress.json"
+            ],
+            "url": "https://on.cypress.io/cypress.schema.json"
+        }
+    ],
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.sortImports": "explicit"
+    },
+    "[javascript, python, css, html]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.sortImports": "explicit",
+            "source.fixAll.eslint": "explicit"
+        }
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        // "typescript",
+        "typescriptreact"
+    ],
+    "eslint.options": {
+        "overrideConfig": {
+            "env": {
+                "browser": true,
+                "jest/globals": true,
+                "es6": true
+            },
+            "parserOptions": {
+                "ecmaVersion": 2021,
+                "sourceType": "module",
+                "ecmaFeatures": {
+                    "jsx": true
+                }
+            },
+            "rules": {
+                "no-debugger": "off"
+            }
+        }
+    },
+    "editor.suggest.showDeprecated": false,
+    "editor.suggest.preview": true,
+    "quokka.automaticRestart": false,
+    "git.ignoreMissingGitWarning": true,
+    "editor.defaultFormatter": "biomejs.biome",
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "always",
+            "source.organizeImports": "always"
+        }
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "explorer.confirmDelete": false,
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript, javascriptreact, typescript, typescriptreact]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer"
+    },
+    "explorer.confirmDragAndDrop": false,
+    "git.openRepositoryInParentFolders": "never",
+    "console-ninja.featureSet": "Community",
+    "workbench.editorAssociations": {
+        "*.sql": "default"
+    },
+    "terminal.integrated.fontFamily": "Monaco",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.env.windows": {},
+    "workbench.navigationControl.enabled": false,
+    "window.commandCenter": false,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "terminal.integrated.suggest.enabled": true,
+    "terminal.integrated.env.linux": {},
+    "editor.fontSize": 14,
+    "python.defaultInterpreterPath": "/bin/python3",
+    "python.createEnvironment.trigger": "off",
+    "biome.suggestInstallingGlobally": false,
+    "symbols.hidesExplorerArrows": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "src",
+        "tests"
+    ],
+    // customizing the editor
+    "editor.minimap.enabled": false,
+    "workbench.sideBar.location": "right",
+    "editor.overviewRulerBorder": false,
+    "editor.scrollbar.vertical": "hidden",
+    "editor.renderWhitespace": "none",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "workbench.statusBar.visible": false,
+    "workbench.editor.showTabs": "multiple",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "terminal.integrated.allowedLinkSchemes": [
+        "file",
+        "http",
+        "https",
+        "mailto",
+        "vscode",
+        "vscode-insiders",
+        "app/_layout.tsx"
+    ],
+    "explorer.compactFolders": false,
+}

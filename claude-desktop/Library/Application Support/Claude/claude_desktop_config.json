@@ -1,0 +1,32 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "/Users/oscles/.asdf/shims/npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/oscles/Orbidi/",
+        "/Users/oscles/Downloads/"
+      ]
+    },
+    "context7": {
+      "command": "/Users/oscles/.asdf/shims/npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp",
+        "--api-key",
+        "YOUR_CONTEXT7_API_KEY_HERE"
+      ]
+    },
+    "notion": {
+      "command": "/Users/oscles/.asdf/shims/npx",
+      "args": [
+        "-y",
+        "@notionhq/notion-mcp-server"
+      ],
+      "env": {
+        "NOTION_TOKEN": "YOUR_NOTION_TOKEN_HERE"
+      }
+    }
+  }
+}
