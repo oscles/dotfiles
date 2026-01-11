@@ -184,8 +184,72 @@ install_homebrew_packages() {
     echo ""
 }
 
+# Show usage information
+show_usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  --apps-only        Install only Homebrew packages (skip dotfiles)"
+    echo "  --skip-test        Skip dry-run test before installation"
+    echo "  --help, -h         Show this help message"
+    echo ""
+    echo "Examples:"
+    echo "  $0                 # Full installation with prompts"
+    echo "  $0 --apps-only     # Install only Homebrew packages"
+    echo "  $0 --skip-test    # Skip dry-run test"
+}
+
 # Main installation function
 main() {
+    # Check for help flag
+    if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+        show_usage
+        exit 0
+    fi
+    
+    # Check for apps-only flag
+    if [[ "$1" == "--apps-only" ]]; then
+        print_header "Homebrew Packages Installation"
+        print_info "This script will install only Homebrew packages from Brewfile"
+        print_info "Script location: $SCRIPT_DIR"
+        echo ""
+        
+        # Check prerequisites (only Homebrew needed)
+        if ! command_exists brew; then
+            print_error "Homebrew is not installed"
+            print_step "Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            print_success "Homebrew installed"
+        else
+            print_success "Homebrew is installed"
+            print_info "Homebrew version: $(brew --version | head -n1)"
+        fi
+        
+        echo ""
+        
+        # Install Homebrew packages
+        if [ -f "Brewfile" ]; then
+            install_homebrew_packages
+            
+            # Final summary
+            print_header "Installation Complete!"
+            print_success "All Homebrew packages have been installed successfully"
+            echo ""
+            print_info "Installed packages include:"
+            echo "  • Applications (Cursor, Docker, Slack, Brave, etc.)"
+            echo "  • CLI Tools (git, fnm, pnpm, pyenv)"
+            echo "  • Fonts (JetBrains Mono, Zed Mono)"
+            echo "  • VS Code/Cursor extensions"
+            echo ""
+        else
+            print_error "Brewfile not found"
+            exit 1
+        fi
+        
+        return 0
+    fi
+    
+    # Normal installation flow
     print_header "Dotfiles Installation Script"
     print_info "This script will install your dotfiles using GNU Stow"
     print_info "Script location: $SCRIPT_DIR"

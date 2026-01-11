@@ -68,6 +68,12 @@ The script will:
 ```bash
 # Skip the dry-run test
 ./install.sh --skip-test
+
+# Install only Homebrew packages (skip dotfiles)
+./install.sh --apps-only
+
+# Show help message
+./install.sh --help
 ```
 
 See the [Installation Scripts](#-installation-scripts) section for more details.
@@ -163,6 +169,12 @@ The main installation script automates the entire setup process with a user-frie
 ```bash
 # Skip the dry-run test (faster installation)
 ./install.sh --skip-test
+
+# Install only Homebrew packages (skip dotfiles installation)
+./install.sh --apps-only
+
+# Show help message
+./install.sh --help
 ```
 
 **Example Output:**
@@ -181,6 +193,25 @@ The main installation script automates the entire setup process with a user-frie
 → Installing git configuration...
 ✓ git configuration installed
 ```
+
+**Install Only Applications:**
+
+If you only want to install Homebrew packages without setting up dotfiles:
+
+```bash
+./install.sh --apps-only
+```
+
+This mode:
+- ✅ Only checks/installs Homebrew (Stow not required)
+- 🍺 Installs all packages from Brewfile
+- ⚡ Faster installation (skips dotfiles setup)
+- 📦 Perfect for setting up a new machine with just applications
+
+Useful when:
+- You only want to install applications and tools
+- You're setting up a new Mac and want apps first
+- You prefer to configure dotfiles manually later
 
 ### Testing Script (`test.sh`)
 
