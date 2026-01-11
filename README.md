@@ -84,6 +84,22 @@ This will install:
 - Fonts (JetBrains Mono, Zed Mono)
 - VS Code/Cursor extensions
 
+### Post-Installation Setup
+
+After installing the dotfiles, you may need to configure API keys for some applications:
+
+**Claude Desktop API Keys:**
+1. Edit the configuration file:
+   ```bash
+   nano ~/Library/Application Support/Claude/claude_desktop_config.json
+   ```
+2. Replace the placeholder values:
+   - `YOUR_CONTEXT7_API_KEY_HERE` → Your Context7 API key
+   - `YOUR_NOTION_TOKEN_HERE` → Your Notion integration token
+3. Restart Claude Desktop
+
+See the [Claude Desktop Configuration](#claude-desktop-configuration) section for more details.
+
 ## 🛠️ Installation Scripts
 
 This repository includes convenient installation scripts that provide colored output and interactive prompts to guide you through the installation process.
@@ -285,6 +301,29 @@ Cursor settings include:
 - Editor preferences
 - Keybindings
 - Extensions (managed via Brewfile)
+
+### Claude Desktop Configuration
+
+Claude Desktop configuration includes:
+- MCP (Model Context Protocol) server configurations
+- Filesystem access configuration
+- Context7 integration
+- Notion integration
+
+**⚠️ Important:** After installation, you need to add your API keys to the configuration file:
+
+1. Open the configuration file:
+   ```bash
+   ~/Library/Application Support/Claude/claude_desktop_config.json
+   ```
+
+2. Replace the placeholder values with your actual API keys:
+   - `YOUR_CONTEXT7_API_KEY_HERE` → Your Context7 API key
+   - `YOUR_NOTION_TOKEN_HERE` → Your Notion integration token
+
+3. Restart Claude Desktop for the changes to take effect.
+
+**Security Note:** API keys are stored as placeholders in this repository for security. Never commit actual API keys to version control.
 
 ### Homebrew Packages
 
