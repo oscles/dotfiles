@@ -37,3 +37,19 @@ Temporary Items
 *.backup
 *.bak
 *~
+
+# Cursor/VS Code cache and temporary files
+**/Cache/
+**/CachedData/
+**/workspaceStorage/
+**/state.vscdb
+**/History/
+**/CachedExtensions/
+**/CachedExtensionVSIXs/
+**/globalStorage/
+**/snippets/
+**/*.cache
+
+# Claude Desktop cache
+**/Library/Application Support/Claude/Cache/
+**/Library/Application Support/Claude/logs/

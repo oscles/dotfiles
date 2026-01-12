@@ -218,6 +218,12 @@ install_dotfiles() {
                 if stow --adopt --verbose "$dir" 2>&1 | tee /tmp/stow_output.log; then
                     print_success "$dir configuration installed (existing files backed up)"
                     print_info "Original files were backed up in the dotfiles directory"
+                    
+                    # Clean up cache and temporary files that might have been adopted
+                    print_step "Cleaning up cache and temporary files..."
+                    find "$dir" -type f \( -name "*.log" -o -name "*.cache" -o -name "state.vscdb" \) -delete 2>/dev/null || true
+                    find "$dir" -type d \( -name "Cache" -o -name "CachedData" -o -name "workspaceStorage" -o -name "logs" -o -name "History" -o -name "CachedExtensions" -o -name "CachedExtensionVSIXs" -o -name "globalStorage" -o -name "snippets" \) -exec rm -rf {} + 2>/dev/null || true
+                    print_success "Cache files cleaned"
                 else
                     print_error "Failed to install $dir configuration even with --adopt"
                     print_info "Check /tmp/stow_output.log for details"
