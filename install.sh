@@ -53,6 +53,28 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
+# Setup Homebrew PATH after installation
+setup_homebrew_path() {
+    # Detect architecture and Homebrew path
+    if [[ -d "/opt/homebrew/bin" ]]; then
+        # Apple Silicon (M1/M2/M3)
+        export PATH="/opt/homebrew/bin:$PATH"
+    elif [[ -d "/usr/local/bin" ]]; then
+        # Intel Mac
+        export PATH="/usr/local/bin:$PATH"
+    fi
+    
+    # Verify brew is available, if not try shellenv
+    if ! command_exists brew; then
+        # Try to evaluate Homebrew's shellenv script
+        if [[ -f "/opt/homebrew/bin/brew" ]]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        elif [[ -f "/usr/local/bin/brew" ]]; then
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+    fi
+}
+
 # Check prerequisites
 check_prerequisites() {
     print_header "Checking Prerequisites"
@@ -92,6 +114,10 @@ check_prerequisites() {
             print_step "Installing Homebrew..."
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             print_success "Homebrew installed"
+            
+            # Add Homebrew to PATH
+            setup_homebrew_path
+            print_info "Homebrew added to PATH"
         fi
         
         if [[ " ${missing_deps[@]} " =~ " stow " ]]; then
@@ -261,6 +287,10 @@ main() {
             print_step "Installing Homebrew..."
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             print_success "Homebrew installed"
+            
+            # Add Homebrew to PATH
+            setup_homebrew_path
+            print_info "Homebrew added to PATH"
         else
             print_success "Homebrew is installed"
             print_info "Homebrew version: $(brew --version | head -n1)"
