@@ -75,6 +75,16 @@ check_prerequisites() {
         print_info "Stow version: $(stow --version | head -n1)"
     fi
     
+    # Check Oh My Zsh (required for zsh configuration)
+    if [ -d "zsh" ]; then
+        if [ -d "$HOME/.oh-my-zsh" ]; then
+            print_success "Oh My Zsh is installed"
+        else
+            print_warning "Oh My Zsh is not installed"
+            missing_deps+=("ohmyzsh")
+        fi
+    fi
+    
     if [ ${#missing_deps[@]} -gt 0 ]; then
         print_header "Installing Missing Dependencies"
         
@@ -88,6 +98,16 @@ check_prerequisites() {
             print_step "Installing GNU Stow..."
             brew install stow
             print_success "GNU Stow installed"
+        fi
+        
+        if [[ " ${missing_deps[@]} " =~ " ohmyzsh " ]]; then
+            print_step "Installing Oh My Zsh..."
+            if sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended; then
+                print_success "Oh My Zsh installed successfully"
+            else
+                print_error "Failed to install Oh My Zsh"
+                print_info "You can install it manually: sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
+            fi
         fi
     fi
     
