@@ -243,17 +243,26 @@ install_homebrew_packages() {
     
     print_step "Installing packages from Brewfile..."
     print_info "This may take a while depending on your internet connection"
+    print_info "If some packages fail, the installation will continue..."
     echo ""
     
-    if brew bundle install; then
+    # Temporarily disable exit on error for brew bundle
+    set +e
+    brew bundle install
+    local bundle_exit_code=$?
+    set -e
+    
+    if [ $bundle_exit_code -eq 0 ]; then
         print_success "All Homebrew packages installed successfully"
     else
-        print_error "Some Homebrew packages failed to install"
-        print_info "You can run 'brew bundle' manually to retry"
-        return 1
+        print_warning "Some Homebrew packages may have failed to install"
+        print_info "This is normal - some packages may already be installed or unavailable"
+        print_info "You can run 'brew bundle' manually later to retry failed packages"
+        print_info "Continuing with the rest of the installation..."
     fi
     
     echo ""
+    return 0
 }
 
 # Apply system preferences
@@ -326,11 +335,19 @@ main() {
         
         # Install Homebrew packages
         if [ -f "Brewfile" ]; then
+            # Temporarily disable exit on error
+            set +e
             install_homebrew_packages
+            local install_result=$?
+            set -e
             
             # Final summary
             print_header "Installation Complete!"
-            print_success "All Homebrew packages have been installed successfully"
+            if [ $install_result -eq 0 ]; then
+                print_success "Homebrew packages installation completed"
+            else
+                print_warning "Homebrew packages installation completed with some warnings"
+            fi
             echo ""
             print_info "Installed packages include:"
             echo "  • Applications (Cursor, Docker, Slack, Brave, etc.)"
@@ -372,7 +389,10 @@ main() {
         read -p "$(echo -e ${YELLOW}Do you want to install Homebrew packages? [Y/n]: ${NC})" -n 1 -r
         echo ""
         if [[ ! $REPLY =~ ^[Nn]$ ]]; then
+            # Temporarily disable exit on error to continue even if some packages fail
+            set +e
             install_homebrew_packages
+            set -e
         else
             print_info "Skipping Homebrew package installation"
             print_info "You can run 'brew bundle' later to install packages"
