@@ -147,6 +147,15 @@ test_stow() {
     print_step "Running stow --dry-run to preview changes..."
     echo ""
     
+    # Check for conflicts first
+    local has_conflicts=false
+    if stow --dry-run --verbose . 2>&1 | grep -q "existing target.*since neither a link nor a directory"; then
+        has_conflicts=true
+        print_warning "Existing files detected that will conflict"
+        print_info "The installation will use --adopt to backup and replace them"
+        echo ""
+    fi
+    
     if stow --dry-run --verbose . 2>&1 | grep -q "LINK:"; then
         print_success "Stow dry-run completed successfully"
         print_info "Review the output above to see what will be installed"
@@ -189,12 +198,29 @@ install_dotfiles() {
         print_step "Installing $dir configuration..."
         
         if [ -d "$dir" ]; then
+            # First try without --adopt
             if stow --verbose "$dir" 2>&1 | tee /tmp/stow_output.log; then
                 print_success "$dir configuration installed"
             else
-                print_error "Failed to install $dir configuration"
-                print_info "Check /tmp/stow_output.log for details"
-                return 1
+                # If it fails, check if it's due to existing files
+                if grep -q "existing target.*since neither a link nor a directory" /tmp/stow_output.log 2>/dev/null; then
+                    print_warning "Existing files detected for $dir configuration"
+                    print_info "Using --adopt to backup and replace existing files..."
+                    
+                    # Use --adopt to backup existing files and create symlinks
+                    if stow --adopt --verbose "$dir" 2>&1 | tee /tmp/stow_output.log; then
+                        print_success "$dir configuration installed (existing files backed up)"
+                        print_info "Original files were backed up in the dotfiles directory"
+                    else
+                        print_error "Failed to install $dir configuration even with --adopt"
+                        print_info "Check /tmp/stow_output.log for details"
+                        return 1
+                    fi
+                else
+                    print_error "Failed to install $dir configuration"
+                    print_info "Check /tmp/stow_output.log for details"
+                    return 1
+                fi
             fi
         else
             print_warning "$dir directory not found, skipping"
