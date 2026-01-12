@@ -114,24 +114,34 @@
     "terminal.integrated.env.linux": {},
     "editor.fontSize": 14,
     "python.defaultInterpreterPath": "/bin/python3",
+    // "python.defaultInterpreterPath": "./venv/bin/python",
     "python.createEnvironment.trigger": "off",
     "biome.suggestInstallingGlobally": false,
     "symbols.hidesExplorerArrows": false,
     "python.testing.pytestEnabled": true,
     "python.testing.unittestEnabled": false,
+    "python.terminal.activateEnvironment": true,
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python.testing.cwd": "${workspaceFolder}",
     "python.testing.pytestArgs": [
         "src",
         "tests"
     ],
+    "python.analysis.extraPaths": [
+        "src"
+    ],
+    "ruff.lineLength": 120,
     // customizing the editor
     "editor.minimap.enabled": false,
     "workbench.sideBar.location": "right",
+    "breadcrumbs.enabled": false,
     "editor.overviewRulerBorder": false,
     "editor.scrollbar.vertical": "hidden",
     "editor.renderWhitespace": "none",
     "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
     "workbench.statusBar.visible": false,
     "workbench.editor.showTabs": "multiple",
+    "explorer.compactFolders": false,
     "diffEditor.ignoreTrimWhitespace": false,
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
@@ -145,5 +155,4 @@
         "vscode-insiders",
         "app/_layout.tsx"
     ],
-    "explorer.compactFolders": false,
 }

@@ -62,16 +62,16 @@ check_stow() {
 test_all() {
     print_header "Testing All Configurations"
     
-    print_step "Running stow --dry-run --verbose on all configurations..."
+    print_step "Running stow -n (simulation) --verbose on all configurations..."
     echo ""
     
-    if stow --dry-run --verbose .; then
+    if stow -n --verbose .; then
         echo ""
-        print_success "Dry-run test completed successfully"
+        print_success "Simulation test completed successfully"
         print_info "No changes were made to your system"
     else
         echo ""
-        print_error "Dry-run test encountered issues"
+        print_error "Simulation test encountered issues"
         return 1
     fi
 }
@@ -92,15 +92,15 @@ test_specific() {
     
     print_header "Testing $config Configuration"
     
-    print_step "Running stow --dry-run --verbose on $config..."
+    print_step "Running stow -n (simulation) --verbose on $config..."
     echo ""
     
-    if stow --dry-run --verbose "$config"; then
+    if stow -n --verbose "$config"; then
         echo ""
-        print_success "Dry-run test for $config completed successfully"
+        print_success "Simulation test for $config completed successfully"
     else
         echo ""
-        print_error "Dry-run test for $config encountered issues"
+        print_error "Simulation test for $config encountered issues"
         return 1
     fi
 }

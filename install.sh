@@ -144,20 +144,20 @@ check_prerequisites() {
 test_stow() {
     print_header "Testing Stow Installation (Dry Run)"
     
-    print_step "Running stow --dry-run to preview changes..."
+    print_step "Running stow -n (simulation) to preview changes..."
     echo ""
     
     # Check for conflicts first
     local has_conflicts=false
-    if stow --dry-run --verbose . 2>&1 | grep -q "existing target.*since neither a link nor a directory"; then
+    if stow -n --verbose . 2>&1 | grep -q "existing target.*since neither a link nor a directory"; then
         has_conflicts=true
         print_warning "Existing files detected that will conflict"
         print_info "The installation will use --adopt to backup and replace them"
         echo ""
     fi
     
-    if stow --dry-run --verbose . 2>&1 | grep -q "LINK:"; then
-        print_success "Stow dry-run completed successfully"
+    if stow -n --verbose . 2>&1 | grep -q "LINK:"; then
+        print_success "Stow simulation completed successfully"
         print_info "Review the output above to see what will be installed"
         echo ""
         
@@ -177,6 +177,12 @@ test_stow() {
 # Install dotfiles with stow
 install_dotfiles() {
     print_header "Installing Dotfiles"
+    
+    # Clean system files before installation
+    print_step "Cleaning system files (.DS_Store)..."
+    find . -name ".DS_Store" -type f -delete 2>/dev/null || true
+    print_success "System files cleaned"
+    echo ""
     
     # Get list of directories to stow
     local dirs=()
@@ -198,24 +204,28 @@ install_dotfiles() {
         print_step "Installing $dir configuration..."
         
         if [ -d "$dir" ]; then
-            # First try without --adopt
-            if stow --verbose "$dir" 2>&1 | tee /tmp/stow_output.log; then
-                print_success "$dir configuration installed"
+            # First check for conflicts using simulation
+            print_info "Checking for existing files..."
+            local has_conflicts=false
+            if stow -n --verbose "$dir" 2>&1 | grep -q "existing target.*since neither a link nor a directory"; then
+                has_conflicts=true
+                print_warning "Existing files detected for $dir configuration"
+                print_info "Using --adopt to backup and replace existing files..."
+            fi
+            
+            # Install with --adopt if conflicts detected, otherwise normal install
+            if [ "$has_conflicts" = true ]; then
+                if stow --adopt --verbose "$dir" 2>&1 | tee /tmp/stow_output.log; then
+                    print_success "$dir configuration installed (existing files backed up)"
+                    print_info "Original files were backed up in the dotfiles directory"
+                else
+                    print_error "Failed to install $dir configuration even with --adopt"
+                    print_info "Check /tmp/stow_output.log for details"
+                    return 1
+                fi
             else
-                # If it fails, check if it's due to existing files
-                if grep -q "existing target.*since neither a link nor a directory" /tmp/stow_output.log 2>/dev/null; then
-                    print_warning "Existing files detected for $dir configuration"
-                    print_info "Using --adopt to backup and replace existing files..."
-                    
-                    # Use --adopt to backup existing files and create symlinks
-                    if stow --adopt --verbose "$dir" 2>&1 | tee /tmp/stow_output.log; then
-                        print_success "$dir configuration installed (existing files backed up)"
-                        print_info "Original files were backed up in the dotfiles directory"
-                    else
-                        print_error "Failed to install $dir configuration even with --adopt"
-                        print_info "Check /tmp/stow_output.log for details"
-                        return 1
-                    fi
+                if stow --verbose "$dir" 2>&1 | tee /tmp/stow_output.log; then
+                    print_success "$dir configuration installed"
                 else
                     print_error "Failed to install $dir configuration"
                     print_info "Check /tmp/stow_output.log for details"
