@@ -184,6 +184,27 @@ install_homebrew_packages() {
     echo ""
 }
 
+# Apply system preferences
+apply_system_preferences() {
+    if [ ! -f "system-preferences.sh" ]; then
+        print_warning "system-preferences.sh not found, skipping system preferences"
+        return 0
+    fi
+    
+    print_header "Applying System Preferences"
+    print_step "Configuring macOS system preferences..."
+    echo ""
+    
+    if bash system-preferences.sh; then
+        print_success "System preferences applied successfully"
+    else
+        print_warning "Some system preferences may not have been applied"
+        print_info "You can run './system-preferences.sh' manually to retry"
+    fi
+    
+    echo ""
+}
+
 # Show usage information
 show_usage() {
     echo "Usage: $0 [OPTIONS]"
@@ -281,6 +302,9 @@ main() {
             print_info "You can run 'brew bundle' later to install packages"
         fi
     fi
+    
+    # Apply system preferences
+    apply_system_preferences
     
     # Final summary
     print_header "Installation Complete!"
