@@ -1,4 +1,3 @@
-tap "homebrew/cask-fonts"
 brew "git"
 brew "fnm"
 brew "pnpm"
